@@ -1,5 +1,6 @@
 import 'package:employee_mn_system/controller/auth_controller.dart';
 import 'package:employee_mn_system/utils/app_colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,45 +18,47 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<AuthController>(
         init: AuthController(),
-        builder: (controller) => Container(
-          width: _deviceWidth,
-          height: _deviceHeight,
-          padding: EdgeInsets.symmetric(horizontal: _deviceWidth * 0.06),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.crimson,
-                      fontSize: 40.0,
+        builder: (controller) => Center(
+          child: Container(
+            width: kIsWeb ? _deviceWidth * 0.6 : _deviceWidth * 0.9,
+            height: _deviceHeight,
+            padding: EdgeInsets.symmetric(horizontal: _deviceWidth * 0.06),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.crimson,
+                        fontSize: 40.0,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: _deviceHeight * 0.05,
-                ),
-                _textFormFields(),
-                SizedBox(
-                  height: _deviceHeight * 0.09,
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      controller.login(usernameController.text, passwordController.text);
-                    }
-                  },
-                  child: const Text('Login',style: TextStyle(
-                    color: AppColors.blue,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold
-                  ),),
-                ),
-              ],
+                  SizedBox(
+                    height: _deviceHeight * 0.05,
+                  ),
+                  _textFormFields(),
+                  SizedBox(
+                    height: _deviceHeight * 0.09,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        controller.login(usernameController.text, passwordController.text);
+                      }
+                    },
+                    child: const Text('Login',style: TextStyle(
+                      color: AppColors.blue,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold
+                    ),),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

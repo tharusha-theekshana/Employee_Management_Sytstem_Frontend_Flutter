@@ -8,8 +8,9 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class AuthService extends GetxController {
-  var token = ''.obs;
+class AuthService extends GetxService {
+  var token = '';
+  var userData = '';
 
   Future<void> login(String username, String password) async {
 
@@ -26,10 +27,11 @@ class AuthService extends GetxController {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
-      token.value = responseData['data']["token"];
+      token = responseData['data']["token"];
+      userData = responseData['data']["user"];
 
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(AppStrings.token, token.value);
+      await prefs.setString(AppStrings.token, token);
 
       Get.offAll(const HomePage());
     } else {
@@ -39,6 +41,6 @@ class AuthService extends GetxController {
 
   Future<void> loadToken() async {
     final prefs = await SharedPreferences.getInstance();
-    token.value = prefs.getString('token') ?? '';
+    token = prefs.getString('token') ?? '';
   }
 }
