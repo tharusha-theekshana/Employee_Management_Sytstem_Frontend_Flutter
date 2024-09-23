@@ -7,10 +7,12 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/user.dart';
+
 
 class AuthService extends GetxService {
   var token = '';
-  var userData = '';
+  var userData = {};
 
   Future<void> login(String username, String password) async {
 
@@ -32,6 +34,7 @@ class AuthService extends GetxService {
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(AppStrings.token, token);
+      await prefs.setString(AppStrings.userData, jsonEncode(userData));
 
       Get.offAll(const HomePage());
     } else {
@@ -39,8 +42,14 @@ class AuthService extends GetxService {
     }
   }
 
-  Future<void> loadToken() async {
+  Future<void> loadTokenAndUserData() async {
     final prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token') ?? '';
+
+    String? userDataString = prefs.getString(AppStrings.userData);
+
+    if (userDataString != null) {
+      userData = jsonDecode(userDataString); // Load user data
+    }
   }
 }
